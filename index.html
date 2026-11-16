@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yelema · Envoyer, réflexes, versions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&display=swap" rel="stylesheet">
+<style>
+:root{--b:#e60e4e;--bi:#b50a3d;--tint:#fde7ee;--bg:#f6f1f3;--s:#fff;--soft:#f1edf0;--soft2:#e8dfe2;--ink:#17112b;--ink2:#4a4563;--ink3:#6f6a86;--line:rgba(48,22,103,.1);--ok:#137a4b;--okp:#dff3e8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Onest,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.i{display:inline-block;width:20px;height:20px;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;flex:none}
+.sm .i,.i.sm{width:16px;height:16px}
+h1,h2,.disp{font-family:"Bricolage Grotesque",Onest,sans-serif}
+.app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;background:var(--bg);overflow:hidden}
+.top{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+.rb{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--s);border:1px solid var(--line)}
+.ex{display:flex;align-items:center;gap:12px;padding:14px 16px 8px;background:var(--s)}
+.av{width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none}
+.av.s{width:28px;height:28px}.av.xs{width:22px;height:22px}
+.tabs{display:flex;gap:4px;padding:6px 10px 10px;background:var(--s);border-bottom:1px solid var(--line);overflow:auto}
+.tabs span{padding:8px 12px;border-radius:999px;font-weight:600;font-size:15px;color:var(--ink2);white-space:nowrap}
+.tabs .on{background:var(--tint);color:var(--b)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px}
+.btn.p{background:var(--b);color:#fff}.btn.g{background:var(--s);border:1px solid var(--line)}.btn.t{background:var(--soft);color:var(--ink)}
+.btn.w{width:100%}
+.msg{max-width:88%;padding:12px 14px;border-radius:18px;font-size:15px;line-height:1.45}
+.me{margin-left:auto;background:var(--b);color:#fff;border-bottom-right-radius:6px}
+.ai{background:var(--s);border:1px solid var(--line);border-bottom-left-radius:6px}
+.chat{padding:16px;display:flex;flex-direction:column;gap:12px}
+.doc{display:flex;gap:12px;align-items:center;background:var(--s);border:1px solid var(--line);border-radius:16px;padding:10px;max-width:88%}
+.doc img{width:56px;height:56px;border-radius:10px;object-fit:cover}
+.doc b{display:block;font-size:14.5px}.doc small{font-size:12.5px;color:var(--ink3)}
+.card{background:var(--s);border:1px solid var(--line);border-radius:20px}
+.ask{border:1.5px solid color-mix(in srgb,var(--b) 35%,transparent);background:var(--tint);border-radius:20px;padding:14px;max-width:94%}
+.ask p{font-size:15px;line-height:1.45}
+.row{display:flex;align-items:center;gap:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--s);font-size:13.5px;font-weight:600}
+.chip.on{border-color:var(--b);background:var(--tint);color:var(--bi)}
+.comp{position:absolute;left:0;right:0;bottom:0;padding:12px 16px 18px;background:var(--bg)}
+.comp .box{background:var(--s);border:1px solid var(--line);border-radius:22px;padding:12px 14px;display:flex;align-items:center;gap:10px;color:var(--ink3);font-size:15px}
+.ov{position:absolute;inset:0;background:rgba(23,17,43,.42);display:flex;align-items:flex-end}
+.sheet{width:100%;background:var(--s);border-radius:24px 24px 0 0;padding:10px 18px 22px;max-height:92%;overflow:auto}
+.grab{width:40px;height:5px;border-radius:9px;background:var(--soft2);margin:2px auto 12px}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sh h2{font-size:20px;flex:1}
+.lbl{font-size:13px;font-weight:600;color:var(--ink3);margin:16px 0 8px;text-transform:none}
+.opt{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;border:1px solid var(--line);margin-bottom:8px;min-height:60px;width:100%;text-align:left}
+.opt.on{border:1.5px solid var(--b);background:var(--tint)}
+.opt .tx{flex:1;min-width:0}.opt b{display:block;font-size:15px}.opt small{display:block;font-size:13px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--soft);color:var(--ink2);flex:none}
+.ok{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--b);color:#fff}
+.ok .i{width:14px;height:14px}
+.ver{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--okp);color:var(--ok);font-size:13.5px;font-weight:600}
+.prev{border-radius:16px;overflow:hidden;background:var(--soft);aspect-ratio:4/3}
+.prev img{width:100%;height:100%;object-fit:cover}
+.seg{display:flex;background:var(--soft);border-radius:999px;padding:4px;gap:4px}
+.seg button{flex:1;height:38px;border-radius:999px;font-weight:600;font-size:14px;color:var(--ink2);display:flex;align-items:center;justify-content:center;gap:6px}
+.seg .on{background:var(--s);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.inp{height:46px;border:1px solid var(--line);border-radius:14px;padding:0 14px;display:flex;align-items:center;color:var(--ink3);font-size:15px;background:var(--s)}
+.tg{width:46px;height:28px;border-radius:999px;background:var(--b);position:relative;flex:none}
+.tg::after{content:"";position:absolute;right:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff}
+.tg.off{background:var(--soft2)}.tg.off::after{right:auto;left:3px}
+.toast{position:absolute;left:16px;right:16px;bottom:96px;background:var(--ink);color:#fff;border-radius:16px;padding:12px 14px;font-size:14px;display:flex;gap:10px;align-items:center}
+.back{display:flex;align-items:center;gap:6px;color:var(--ink2);font-weight:600;font-size:15px}
+.vl{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.vl:last-child{border:0}
+.vl img{width:46px;height:46px;border-radius:10px;object-fit:cover}
+.pill{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--okp);color:var(--ok)}
+.lock{background:linear-gradient(160deg,#3a2a5e,#e60e4e 140%);min-height:100vh;color:#fff;padding:60px 14px 20px}
+.nt{background:rgba(255,255,255,.88);color:var(--ink);border-radius:20px;padding:12px 14px;display:flex;gap:12px;backdrop-filter:blur(10px)}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;z-index:9;display:flex;gap:6px;background:rgba(23,17,43,.88);padding:6px;border-radius:999px}
+.nav a{color:#fff;text-decoration:none;font-size:12.5px;font-weight:600;padding:7px 10px;border-radius:999px}
+.nav a.on{background:var(--b)}
+@media (min-width:900px){.app{box-shadow:0 10px 50px rgba(0,0,0,.08)}}
+</style></head><body>
+<div id="app"></div>
+<nav class="nav" id="nav"></nav>
+<script>
+const INI=(t,c="#2E4EC4",z=40)=>`<span style="width:${z}px;height:${z}px;border-radius:50%;background:${c};color:#fff;display:grid;place-items:center;font-weight:700;font-size:${Math.round(z*.38)}px;flex:none">${t}</span>`;
+const IC=n=>`<span class="i" style="--m:url(https://cdn.jsdelivr.net/npm/lucide-static@0.460.0/icons/${n}.svg)"></span>`;
+const Q=new URLSearchParams(location.search);const E=Q.get("e")||"1";
+const STEPS=[["1","Envoyer"],["2","Fin"],["3","Versions"],["4","Routines"],["5","Nouvelle"],["6","Envoi"],["7","Objectif"],["8","Notif"]];
+document.getElementById("nav").innerHTML=Q.has("cap")?"":STEPS.map(([k,l])=>`<a href="?e=${k}" class="${k===E?"on":""}">${l}</a>`).join("");
+if(Q.has("cap"))document.getElementById("nav").style.display="none";
+const go=e=>{location.search="?e="+e+(Q.has("cap")?"&cap=1":"")};
+const TOP=t=>`<div class="top"><span class="rb">${IC("menu")}</span><b style="flex:1;font-size:17px">${t}</b><span class="rb">${IC("bell")}</span></div>`;
+const EXP=(tab="Discussion",extra="")=>`<div class="ex"><img class="av" src="img/fatima.jpg" alt=""><div style="flex:1;min-width:0"><b style="font-size:17px">Fatima</b><div style="font-size:13.5px;color:var(--ink3)">fatima@unifood.yelema.ai</div></div>${extra}<span class="rb">${IC("phone")}</span></div>
+<div class="tabs">${["Discussion","Livrables","Appels","E-mails","Routines"].map(x=>`<span class="${x===tab?"on":""}">${x}</span>`).join("")}</div>`;
+const COMP=`<div class="comp"><div class="box">${IC("paperclip")}<span style="flex:1">Écrire à Fatima</span><span class="btn p" style="width:44px;padding:0">${IC("mic")}</span></div></div>`;
+const CHAT=(tail="")=>`<div class="chat" style="padding-bottom:110px">
+<div class="msg me">Fais-moi le post de l'offre Prestige pour Facebook, format carré.</div>
+<div class="msg ai">Voici le post, version 3 avec le prix barré comme demandé.</div>
+<button class="doc" onclick="go(1)"><img src="img/flyer-supermint.jpg" alt=""><span style="text-align:left"><b>Post Offre Prestige.png</b><small>Image · version 3 · à l'instant</small></span></button>${tail}</div>`;
+const V={
+// 1 · Envoyer depuis le livrable
+"1":()=>`${TOP("Fatima")}${EXP()}${CHAT()}${COMP}
+<div class="ov"><div class="sheet">
+<div class="grab"></div>
+<div class="sh"><h2>Envoyer</h2><button class="rb" style="width:36px;height:36px" onclick="go(2)">${IC("x")}</button></div>
+<div class="row" style="margin-bottom:10px"><img src="img/flyer-supermint.jpg" style="width:56px;height:56px;border-radius:12px;object-fit:cover" alt=""><div style="flex:1;min-width:0"><b style="font-size:15px">Post Offre Prestige.png</b><div class="ver" style="margin-top:6px;padding:6px 10px">${IC("check")}Version 3, la plus récente <button onclick="go(3)" style="margin-left:auto;text-decoration:underline;font-size:13px">Changer</button></div></div></div>
+<div class="lbl">À moi-même</div>
+<div class="row" style="gap:8px"><button class="opt on" style="flex:1;min-height:56px"><span class="ic" style="background:#fff">${IC("mail")}</span><span class="tx"><b>E-mail</b><small>aicha@unifood.ci</small></span></button><button class="opt" style="flex:1;min-height:56px"><span class="ic">${IC("message-circle")}</span><span class="tx"><b>WhatsApp</b><small>+225 07 08 •• •• 41</small></span></button></div>
+<div class="lbl">Favoris du projet Offre Prestige</div>
+<button class="opt">${INI("MT")}<span class="tx"><b>Moussa Traoré</b><small>Directeur commercial · e-mail</small></span></button>
+<button class="opt"><span class="ic">${IC("printer")}</span><span class="tx"><b>Imprimerie Graphica</b><small>Imprimeur · WhatsApp</small></span></button>
+<button class="opt"><span class="ic">${IC("plus")}</span><span class="tx"><b>Une autre personne</b><small>E-mail ou numéro WhatsApp</small></span></button>
+<button class="btn p w" style="margin-top:10px" onclick="go(2)">${IC("send")}Envoyer à moi-même</button>
+</div></div>`,
+// 2 · Fin de conversation : la question de l'Expert
+"2":()=>`${TOP("Fatima")}${EXP()}${CHAT(`<div class="ask">
+<div class="row" style="gap:8px;margin-bottom:8px"><img class="av xs" src="img/fatima.jpg" alt=""><b style="font-size:13.5px">Fatima propose</b></div>
+<p>Le post est prêt. Je l'envoie à <b>Moussa Traoré</b> par e-mail, comme les autres livrables de l'offre Prestige ?</p>
+<div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn p" style="height:40px" onclick="toast()">${IC("send")}Oui, envoyer</button><button class="btn g" style="height:40px" onclick="go(1)">Changer</button><button class="btn t" style="height:40px">Non</button></div>
+<label class="row" style="gap:10px;margin-top:12px;font-size:13.5px;color:var(--ink2)"><span class="tg off" style="width:38px;height:24px"></span>Toujours envoyer à Moussa pour ce projet</label>
+</div>`)}${COMP}<div class="toast" id="t" style="display:none">${IC("check")}Envoyé à Moussa Traoré par e-mail, version 3.</div>`,
+// 3 · Versions
+"3":()=>`${TOP("Fatima")}${EXP("Livrables")}<div style="padding:14px 16px 120px">
+<button class="back" onclick="go(1)">${IC("chevron-left")}Offre Prestige</button>
+<div class="prev" style="margin-top:12px"><img src="img/flyer-supermint.jpg" alt=""></div>
+<div style="margin:12px 0 4px;font-weight:700;font-size:17px">Post Offre Prestige.png</div>
+<div class="ver">${IC("check")}Version 3 : c'est celle-ci qui part et que Fatima garde en mémoire</div>
+<div class="row" style="gap:8px;margin-top:12px"><button class="btn g" style="flex:1">${IC("download")}Télécharger</button><button class="btn p" style="flex:1" onclick="go(1)">${IC("send")}Envoyer</button></div>
+<div class="lbl" style="margin-top:20px">Versions</div>
+<div class="card" style="padding:4px 12px">
+<div class="vl"><img src="img/flyer-supermint.jpg" alt=""><div style="flex:1"><b style="font-size:14.5px">Version 3</b><div style="font-size:12.5px;color:var(--ink3)">Prix barré · aujourd'hui 15:40</div></div><span class="pill">Gardée</span></div>
+<div class="vl"><img src="img/flyer-supermint.jpg" style="filter:saturate(.4)" alt=""><div style="flex:1"><b style="font-size:14.5px">Version 2</b><div style="font-size:12.5px;color:var(--ink3)">Logo plus grand · aujourd'hui 15:12</div></div><button class="chip">Garder</button></div>
+<div class="vl"><img src="img/flyer-supermint.jpg" style="filter:grayscale(1)" alt=""><div style="flex:1"><b style="font-size:14.5px">Version 1</b><div style="font-size:12.5px;color:var(--ink3)">Premier jet · aujourd'hui 14:50</div></div><span style="font-size:12.5px;color:var(--ink3)">Envoyée à Moussa</span></div>
+</div></div>`,
+// 4 · Routines : la liste, un onglet par type
+"4":()=>`${TOP("Fatima")}${EXP("Routines")}<div style="padding:14px 16px 120px">
+<div class="row" style="justify-content:space-between;margin-bottom:12px"><b style="font-size:17px">Routines</b><button class="btn p" style="height:40px" onclick="go(5)">${IC("plus")}Nouvelle routine</button></div>
+<div class="seg" style="overflow:auto"><button>À une heure</button><button class="on">Envois</button><button>Événement</button><button>Objectifs</button></div>
+<div class="card" style="margin-top:12px">
+${[["send","Tous mes livrables à moi-même","E-mail · dès qu'un livrable est prêt","Envoie seule",1],["file-text","Compte rendu des rendez-vous","À Moussa Traoré et moi · après chaque rendez-vous","Me demande avant",1],["printer","Visuels Offre Prestige à l'imprimeur","WhatsApp · Imprimerie Graphica · version gardée","Me demande avant",0]].map(([ic,t,d,m,on],i)=>`<div class="row" style="padding:14px;${i?"border-top:1px solid var(--line)":""}"><span class="ic" style="background:var(--tint);color:var(--b)">${IC(ic)}</span><div style="flex:1;min-width:0"><b style="font-size:15px;display:block">${t}</b><div style="font-size:13px;color:var(--ink3)">${d}</div><span class="pill" style="display:inline-block;margin-top:5px;${m==="Envoie seule"?"":"background:var(--soft);color:var(--ink2)"}">${m}</span></div><span class="tg ${on?"":"off"}"></span></div>`).join("")}
+</div></div>`,
+// 5 · Nouvelle routine : 4 types expliqués
+"5":()=>`${TOP("Fatima")}${EXP("Routines")}<div style="padding:16px;opacity:.35"><div class="card" style="height:240px"></div></div>
+<div class="ov"><div class="sheet">
+<div class="grab"></div>
+<div class="sh"><h2>Nouvelle routine</h2><button class="rb" style="width:36px;height:36px" onclick="go(4)">${IC("x")}</button></div>
+<button class="opt"><span class="ic" style="background:var(--tint);color:var(--b)">${IC("clock")}</span><span class="tx"><b>À une heure</b><small style="white-space:normal">Ex. chaque lundi à 8 h, le calendrier de la semaine</small></span></button>
+<button class="opt on" onclick="go(6)"><span class="ic" style="background:#fff;color:var(--b)">${IC("send")}</span><span class="tx"><b>Envoi automatique</b><small style="white-space:normal">Ex. m'envoyer chaque livrable, le compte rendu après un rendez-vous</small></span><span class="ok">${IC("check")}</span></button>
+<button class="opt"><span class="ic" style="background:var(--tint);color:var(--b)">${IC("zap")}</span><span class="tx"><b>Quand un événement arrive</b><small style="white-space:normal">Ex. un mail d'un client, un rendez-vous qui approche</small></span></button>
+<button class="opt" onclick="go(7)"><span class="ic" style="background:var(--tint);color:var(--b)">${IC("target")}</span><span class="tx"><b>Objectif</b><small style="white-space:normal">Un chiffre à atteindre, suivi chaque semaine. Ex. 50 avis Google d'ici fin décembre</small></span></button>
+<button class="btn p w" style="margin-top:10px" onclick="go(6)">Continuer</button>
+</div></div>`,
+// 6 · Envoi automatique : le formulaire
+"6":()=>`${TOP("Fatima")}${EXP("Routines")}<div style="padding:16px;opacity:.35"><div class="card" style="height:240px"></div></div>
+<div class="ov"><div class="sheet">
+<div class="grab"></div>
+<div class="sh"><button class="rb" style="width:36px;height:36px" onclick="go(5)">${IC("chevron-left")}</button><h2>Envoi automatique</h2></div>
+<div class="lbl" style="margin-top:4px">Quoi</div>
+<button class="opt on"><span class="ic" style="background:#fff">${IC("file-check")}</span><span class="tx"><b>Chaque livrable</b><small>Dès qu'il est prêt</small></span><span class="ok">${IC("check")}</span></button>
+<button class="opt"><span class="ic">${IC("calendar-check")}</span><span class="tx"><b>Le compte rendu d'un rendez-vous</b><small>Après chaque rendez-vous de l'agenda</small></span></button>
+<button class="opt"><span class="ic">${IC("folder")}</span><span class="tx"><b>Les livrables d'un projet</b><small>Choisir le projet</small></span></button>
+<div class="lbl">À qui</div>
+<div class="row" style="gap:8px;flex-wrap:wrap"><span class="chip on">${IC("user")}Moi-même</span><span class="chip">${INI("MT","#2E4EC4",22)}Moussa Traoré</span><span class="chip">${IC("plus")}Ajouter</span></div>
+<div class="lbl">Par</div>
+<div class="row" style="gap:8px;flex-wrap:wrap"><span class="chip on">${IC("mail")}E-mail</span><span class="chip">${IC("message-circle")}WhatsApp</span><span class="chip">${IC("linkedin")}LinkedIn</span></div>
+<div class="lbl">Fatima</div>
+<div class="seg"><button class="on">Envoie seule</button><button>Me demande avant</button></div>
+<div class="ver" style="margin-top:14px">${IC("check")}Seule la version gardée part, jamais un brouillon</div>
+<button class="btn p w" style="margin-top:16px" onclick="go(4)">Créer l'envoi</button>
+</div></div>`,
+// 7 · Objectif : le formulaire
+"7":()=>`${TOP("Fatima")}${EXP("Routines")}<div style="padding:16px;opacity:.35"><div class="card" style="height:240px"></div></div>
+<div class="ov"><div class="sheet">
+<div class="grab"></div>
+<div class="sh"><button class="rb" style="width:36px;height:36px" onclick="go(5)">${IC("chevron-left")}</button><h2>Objectif</h2></div>
+<div class="lbl" style="margin-top:4px">Le but</div><div class="inp" style="color:var(--ink)">Avis Google de la boutique de Cocody</div>
+<div class="row" style="gap:8px"><div style="flex:1"><div class="lbl">Le chiffre</div><div class="inp" style="color:var(--ink)">50 avis</div></div><div style="flex:1"><div class="lbl">Pour le</div><div class="inp" style="color:var(--ink)">31 décembre</div></div></div>
+<div class="lbl">Point avec moi</div>
+<div class="seg"><button>Chaque jour</button><button class="on">Chaque lundi</button><button>Chaque mois</button></div>
+<p style="font-size:13.5px;color:var(--ink2);margin-top:12px;line-height:1.45">Fatima agit pour l'atteindre (relances, posts) et vous dit chaque lundi où on en est.</p>
+<button class="btn p w" style="margin-top:16px" onclick="go(4)">Créer l'objectif</button>
+</div></div>`,
+// 8 · Notification app fermée
+"8":()=>`<div class="lock"><div style="text-align:center;margin-bottom:40px"><div style="font-size:16px;opacity:.85">lundi 16 novembre</div><div class="disp" style="font-size:76px;font-weight:700;line-height:1">16:02</div></div>
+<div class="nt"><img src="img/fatima.jpg" style="width:40px;height:40px;border-radius:10px;object-fit:cover" alt=""><div style="flex:1"><div class="row" style="justify-content:space-between"><b style="font-size:14px">Yelema · Fatima</b><span style="font-size:12px;color:var(--ink3)">maintenant</span></div><div style="font-size:14px;margin-top:2px">Votre livrable est prêt : Post Offre Prestige</div></div></div>
+<div class="card" style="color:var(--ink);margin-top:28px;padding:16px"><b style="font-size:15px">Paramètres › Notifications</b>
+<div class="row" style="margin-top:14px"><div style="flex:1"><b style="font-size:14.5px">Livrable prêt</b><div style="font-size:13px;color:var(--ink3)">Même quand Yelema est fermé</div></div><span class="tg"></span></div>
+<div class="row" style="margin-top:14px"><div style="flex:1"><b style="font-size:14.5px">Fatima me demande un accord</b><div style="font-size:13px;color:var(--ink3)">Avant un envoi</div></div><span class="tg"></span></div></div></div>`
+};
+function toast(){const t=document.getElementById("t");if(t)t.style.display="flex"}
+document.getElementById("app").innerHTML=`<div class="app">${V[E]()}</div>`;
+if(Q.get("toast"))toast();
+</script></body></html>
